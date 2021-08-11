@@ -1,14 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel = "stylesheet" href = "{% static 'style.css' %}">
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}
     <h1> Listing Page </h1>
     <table>
         <tr>
@@ -27,12 +19,15 @@
     </table>
 
     <h1>Create New Entry</h1>
-    <form action="add-new">
+    <form action="../add-new/" method='post'>
+        
+        {% csrf_token %}
+
         <label for="">FirstName</label>
         <input type="text" name="first_name" id=""> <br>
         <label for="">LastName</label>
         <input type="text" name="last_name" id=""> <br>
         <input type="submit" name="" id="">
     </form>
-</body>
-</html>
+    
+{% endblock %}

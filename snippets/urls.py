@@ -18,11 +18,16 @@ from django.urls import path
 from django.contrib import admin
 from . import views
 
-app_name = 'snippets'
+app_name = "snippets"
 urlpatterns = [
-    path('info/', include([
-        path('snippet-list/', views.snip_listing, name='list'),
-        path('<int:id>/', views.snip_detail, name='detail'),
-        path('snippet-list/add-new', views.add_new)
-    ]))
-    ]
+    path(
+        "info/",
+        include(
+            [
+                path("snippet-list/", views.snip_listing, name="list"),
+                path("<int:id>/", views.snip_detail, name="detail"),
+                path("add-new/", views.add_new),
+            ]
+        ),
+    )
+]

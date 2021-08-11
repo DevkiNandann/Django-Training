@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Person, Products
+from .models import Person, Product
 
 # Register your models here.
 admin.site.register(Person)
-admin.site.register(Products)
+admin.site.register(Product)
