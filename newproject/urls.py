@@ -20,6 +20,6 @@ from snippets import views
 import snippets
 
 urlpatterns = [
-    path('snippets/', include('snippets.urls'), name='snippets'),
-    path(r'^admin/', admin.site.urls),
+    path("snippets/", include("snippets.urls"), name="snippets"),
+    path(r"^admin/", admin.site.urls),
 ]
