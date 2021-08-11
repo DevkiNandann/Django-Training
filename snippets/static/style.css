@@ -1,0 +1,23 @@
+  body{
+    text-align: center;
+  }
+
+  table{
+    background: navajowhite;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+  }
+
+  table, th, td
+    {
+      align-items: center;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    th {
+      background-color: #BDD6EE;
+      padding: 5px;
+      max-width: 450px;
+    }
