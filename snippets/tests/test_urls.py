@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from snippets.views import snip_listing, snip_detail, add_new, index
+from snippets.views import snip_listing, snip_detail, add_new
 
 
 class TestUrls(SimpleTestCase):

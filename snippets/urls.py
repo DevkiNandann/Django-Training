@@ -10,7 +10,7 @@ urlpatterns = [
             [
                 path("snippet-list/", views.snip_listing, name="list"),
                 path("<int:id>/", views.snip_detail, name="detail"),
-                path("snippet-list/add-new", views.add_new, name="addnew"),
+                path("add-new/", views.add_new, name="addnew"),
             ]
         ),
     )
