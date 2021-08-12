@@ -1,10 +1,10 @@
 from __future__ import unicode_literals
-from django.http.response import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http.response import HttpResponse
 from snippets.serializers import PersonSerializer
-
-from django.shortcuts import render, get_object_or_404
-
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from .models import Person
 
 
@@ -12,29 +12,36 @@ def index(request):
     return HttpResponse("index view...")
 
 
-@csrf_exempt
-def snip_listing(request):
-    persons = Person.objects.all()
-    return render(request, "listing_pg.html", {"persons": persons})
-    # serializer = PersonSerializer(persons, many=True)
-    # return JsonResponse(serializer.data, safe=False)
+class SnippetList(APIView):
+    """
+    List all persons, or create a new person.
+    """
+
+    def get(self, request, format=None):
+        person = Person.objects.all()
+        serializer = PersonSerializer(person, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = PersonSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def snip_detail(request, id):
-    person = get_object_or_404(Person, id=id)
-    return render(request, "detail_pg.html", {"person": person})
+class SnippetDetail(APIView):
+    """
+    Get the detail of a person with id
+    """
 
+    def get_object(self, id):
+        try:
+            return Person.objects.get(id=id)
+        except Person.DoesNotExist:
+            raise Http404
 
-@csrf_exempt
-def add_new(request):
-    # f_name = request.POST["first_name"]
-    # l_name = request.POST["last_name"]
-    # new_person = Person(first_name=f_name, last_name=l_name)
-    # new_person.save()
-    # return render(request, "success_pg.html")
-    data = request.POST
-    serializer = PersonSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+    def get(self, request, id, format=None):
+        person = self.get_object(id)
+        serializer = PersonSerializer(person)
+        return Response(serializer.data)

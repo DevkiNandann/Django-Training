@@ -8,9 +8,8 @@ urlpatterns = [
         "info/",
         include(
             [
-                path("snippet-list/", views.snip_listing, name="list"),
-                path("<int:id>/", views.snip_detail, name="detail"),
-                path("add-new/", views.add_new, name="addnew"),
+                path("snippet-list/", views.SnippetList.as_view(), name="list"),
+                path("<int:id>/", views.SnippetDetail.as_view(), name="detail"),
             ]
         ),
     )
