@@ -4,7 +4,8 @@ from snippets.serializers import PersonSerializer
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import generics, mixins
+
 from .models import Person
 
 
@@ -12,22 +13,17 @@ def index(request):
     return HttpResponse("index view...")
 
 
-class SnippetList(APIView):
-    """
-    List all persons, or create a new person.
-    """
+class SnippetList(
+    mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView
+):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
 
-    def get(self, request, format=None):
-        person = Person.objects.all()
-        serializer = PersonSerializer(person, many=True)
-        return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-    def post(self, request, format=None):
-        serializer = PersonSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
 class SnippetDetail(APIView):
