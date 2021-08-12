@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.http.response import HttpResponse
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Person
 
@@ -16,7 +16,7 @@ def snip_listing(request):
 
 
 def snip_detail(request, id):
-    person = Person.objects.get(id=id)
+    person = get_object_or_404(Person, id=id)
     return render(request, "detail_pg.html", {"person": person})
 
 
