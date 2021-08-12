@@ -26,18 +26,10 @@ class SnippetList(
         return self.create(request, *args, **kwargs)
 
 
-class SnippetDetail(APIView):
+class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Get the detail of a person with id
     """
 
-    def get_object(self, id):
-        try:
-            return Person.objects.get(id=id)
-        except Person.DoesNotExist:
-            raise Http404
-
-    def get(self, request, id, format=None):
-        person = self.get_object(id)
-        serializer = PersonSerializer(person)
-        return Response(serializer.data)
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
